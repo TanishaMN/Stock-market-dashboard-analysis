@@ -1,0 +1,183 @@
+/* Automatically adjust background and text colors for dark/light mode */
+
+:root {
+    /* Proper dark mode theme */
+    --bg-color: #121212;
+    --panel-color: #1e1e1e;
+    --text-color: #e0e0e0;
+    --primary-color: #2a2a2a;
+    --accent-color: #ff4d4d;
+    --green: #2ecc71;
+    --red: #e74c3c;
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --overlay-bg: rgba(18, 18, 18, 0.95);
+    --border-color: var(--primary-color);
+    /* New variables for market widget background */
+    --market-widget-bg: #292b39;
+    --market-widget-text-color: #f3f7fa;
+    --market-widget-card-bg: #3a3c4e;
+    --market-widget-label-color: #d1d5de;
+    --market-widget-update-color: #b5b8c3;
+}
+
+body.light-mode {
+    --bg-color: #f3f3f3;
+    --panel-color: #ffffff;
+    --text-color: #222;
+    --primary-color: #e1e1e1;
+    --accent-color: #007bff;
+    --overlay-bg: rgba(255, 255, 255, 0.95);
+    --border-color: #ddd;
+    /* New variables for market widget background in light mode */
+    --market-widget-bg: #fff;
+    --market-widget-text-color: #222a35;
+    --market-widget-card-bg: #f2f3f7;
+    --market-widget-label-color: #34485d;
+    --market-widget-update-color: #777;
+}
+body {
+ background: linear-gradient(135deg, var(--bg-color), var(--panel-color));
+ color: var(--text-color);
+ font-family: var(--font-family);
+ min-height: 100vh;
+ transition: background 0.5s ease, color 0.5s ease;
+ overflow-x: hidden;
+}
+
+#market-widget-container {
+flex: 1;
+min-width: 300px;
+background-color: var(--panel-color);
+padding: 20px;
+border-radius: var(--radius-large);
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); /* Stronger, professional shadow */
+align-self: flex-start; /* Keeps it aligned to the top */
+}
+
+
+/* Remove the @media queries, as the variables handle the switching now */
+
+.market-widget-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 13px;
+    color: inherit;
+}
+
+.market-widget-live {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.98rem;
+    color: #53e07a;
+    font-weight: 600;
+}
+
+.market-widget-dot {
+    width: 9px;
+    height: 9px;
+    background-color: #53e07a;
+    border-radius: 50%;
+    animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(83,224,122,0.6); }
+    70% { box-shadow: 0 0 0 8px rgba(83,224,122,0); }
+    100% { box-shadow: 0 0 0 0 rgba(83,224,122,0); }
+}
+
+.market-widget-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.market-widget-card {
+ background: var(--market-widget-card-bg); /* Using the new variable */
+ border-radius: 11px;
+ padding: 8px 12px;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ font-size: 0.95rem;
+ border-left: 3px solid transparent;
+ transition: border-color 0.3s ease, background 0.3s;
+}
+
+.market-widget-card:last-of-type {
+border-bottom: none;
+}
+
+/* Remove the @media query for light mode cards */
+
+/* Card borders */
+#nifty-card, #banknifty-card {
+    border-left-color: #53e07a;
+}
+#sensex-card {
+    border-left-color: #fc5e62;
+}
+
+.market-widget-label {
+font-size: 1.0rem;
+font-weight: 500;
+color: var(--text-color);
+}
+
+.market-widget-value {
+font-size: 1.4rem; /* Larger for high visibility */
+font-weight: 700;
+margin-top: 2px;
+}
+
+.market-widget-right {
+    min-width: 55px;
+    text-align: right;
+}
+
+\.market-widget-change {
+font-size: 0.95rem;
+font-weight: 600;
+padding: 4px 8px;
+border-radius: var(--radius-small);
+}
+
+.market-widget-change.neg {
+background-color: rgba(248, 81, 73, 0.15); /* Light red background tint */
+color: var(--negative-color);
+}
+
+.market-widget-change.pos {
+background-color: rgba(46, 204, 113, 0.15); /* Light green background tint */
+color: var(--positive-color);
+
+.market-widget-updated {
+font-size: 0.8rem;
+color: var(--text-color);
+opacity: 0.6;
+text-align: right;
+margin-top: 15px;
+padding-top: 10px;
+border-top: 1px solid var(--primary-color);
+}
+
+/* Inherited styles (left as is but with new variables) */
+.change-pos { color: var(--positive-color); }
+.change-neg { color: var(--negative-color); }
+
+
+/* Optional: shadow and card highlights for better visibility in both modes */
+.market-widget-card:hover {
+    background: #484a5c;
+}
+
+@media (prefers-color-scheme: light) {
+    .market-widget-card:hover {
+        background: #e9ebf2;
+    }
+}
+}

@@ -1,0 +1,228 @@
+/* --- Modal Overlay --- */
+.auth-modal-overlay {
+ position: fixed;
+ inset: 0;
+ background-color: var(--overlay-bg, rgba(13, 17, 23, 0.7)); 
+ backdrop-filter: blur(8px);
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ z-index: 1000;
+ opacity: 0;
+ visibility: hidden;
+ transition: opacity 0.3s ease, visibility 0s 0.3s linear;
+}
+
+.auth-modal-overlay.visible {
+ opacity: 1;
+ visibility: visible;
+ transition: opacity 0.3s ease;
+}
+
+/* --- Modal Content --- */
+.auth-modal-content {
+  /* MODIFIED: Use CSS Variables for theme awareness */
+ background-color: var(--panel-color, #ffffff);
+ color: var(--text-color, #24292f);
+ padding: 2.5rem 3rem;
+ border-radius: var(--radius-large, 12px);
+ box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+ max-width: 420px;
+ width: 90%;
+ position: relative;
+ border: 1px solid var(--border-color, #d0d7de);
+ transform: scale(0.95) translateY(-10px);
+ transition: transform 0.3s ease, background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.auth-modal-overlay.visible .auth-modal-content {
+ transform: scale(1) translateY(0);
+}
+
+/* Close Button */
+.auth-modal-close-btn {
+ position: absolute;
+ top: 15px;
+ right: 15px;
+ background: none;
+ border: none;
+ font-size: 1.8rem;
+  /* MODIFIED: Use CSS Variable */
+ color: var(--text-color, #6e7781);
+  opacity: 0.6;
+ cursor: pointer;
+ padding: 5px;
+ line-height: 1;
+ transition: opacity 0.2s ease, transform 0.2s ease, color 0.3s;
+}
+.auth-modal-close-btn:hover {
+ opacity: 1;
+ transform: scale(1.1);
+  /* MODIFIED: Use CSS Variable */
+ color: var(--text-color, #1f2328);
+}
+
+
+/* --- Form Styling --- */
+.auth-modal-content .auth-form h2 {
+ text-align: center;
+ margin-bottom: 2rem;
+  /* MODIFIED: Use CSS Variable */
+ color: var(--text-color, #1f2328);
+ font-weight: 600;
+ font-size: 1.5rem;
+}
+
+.auth-modal-content .form-group {
+ margin-bottom: 1.5rem;
+}
+
+.auth-modal-content .form-group label {
+ display: block;
+ margin-bottom: 0.6rem;
+ font-weight: 500;
+ font-size: 0.9rem;
+  /* MODIFIED: Use CSS Variable */
+ color: var(--text-color, #444c56);
+ opacity: 0.9;
+}
+
+.auth-modal-content .form-group input {
+ width: 100%;
+ padding: 0.8rem 1rem;
+  /* MODIFIED: Use CSS Variables */
+ border: 1px solid var(--border-color, #d0d7de);
+ background-color: var(--bg-color, #ffffff);
+ color: var(--text-color, #1f2328);
+ border-radius: var(--radius-small, 6px);
+ box-sizing: border-box;
+ font-size: 1rem;
+ transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s, color 0.3s;
+}
+/* Style for placeholder text */
+.auth-modal-content .form-group input::placeholder {
+  /* MODIFIED: Use CSS Variable */
+  color: var(--text-color, #6e7781);
+  opacity: 0.6;
+}
+.auth-modal-content .form-group input:focus {
+ outline: none;
+  /* MODIFIED: Use CSS Variable */
+ border-color: var(--accent-color, #0969da);
+ box-shadow: 0 0 0 3px rgba(var(--accent-color, 9, 105, 218), 0.3);
+}
+
+/* Login/Submit button */
+.auth-modal-content .auth-form .button,
+.auth-modal-content .auth-form button[type="submit"] {
+ width: 100%;
+ padding: 0.9rem;
+ border: none;
+ border-radius: var(--radius-small, 6px);
+  /* MODIFIED: Use CSS Variable */
+ background-color: var(--accent-color, #218bff);
+ color: var(--panel-color, #ffffff); /* Text contrasts with accent */
+ font-weight: 600;
+ font-size: 1rem;
+ cursor: pointer;
+ transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.auth-modal-content .auth-form .button:hover,
+.auth-modal-content .auth-form button[type="submit"]:hover {
+  /* MODIFIED: Use filter for hover, works on any color */
+ filter: brightness(1.1);
+ transform: translateY(-1px);
+}
+.auth-modal-content .auth-form .button:active,
+.auth-modal-content .auth-form button[type="submit"]:active {
+  transform: translateY(0px);
+  filter: brightness(0.95);
+}
+
+/* "New user?" / "Already have account?" text */
+.auth-modal-content .auth-form .form-text {
+ text-align: center;
+ margin-top: 1.5rem;
+ font-size: 0.9rem;
+  /* MODIFIED: Use CSS Variable */
+ color: var(--text-color, #444c56);
+ opacity: 0.9;
+}
+/* "Sign up here" / "Login here" link */
+.auth-modal-content .auth-form .form-text a {
+  /* MODIFIED: Use CSS Variable */
+ color: var(--accent-color, #0969da);
+ text-decoration: none;
+ cursor: pointer;
+ font-weight: 500;
+}
+.auth-modal-content .auth-form .form-text a:hover {
+ text-decoration: underline;
+}
+
+/* Password Hint Styling */
+.auth-modal-content .password-hint {
+  font-size: 0.8rem;
+    /* MODIFIED: Use CSS Variable */
+  color: var(--text-color, #57606a);
+  opacity: 0.7;
+  margin-top: 0.4rem;
+  margin-left: 0.2rem;
+}
+
+/* Error Message Styling */
+.auth-modal-content .error-message {
+  /* MODIFIED: Use CSS Variables */
+  color: var(--negative-color, #cf222e);
+  background-color: rgba(var(--negative-color-rgb, 207, 34, 46), 0.1);
+  border: 1px solid rgba(var(--negative-color-rgb, 207, 34, 46), 0.4);
+  border-radius: var(--radius-small, 6px);
+   padding: 0.8rem 1rem;
+  margin-bottom: 1rem;
+  margin-top: -0.5rem;
+  font-size: 0.9rem;
+ 	text-align: center;
+ 	display: none; /* Hidden by default */
+}
+
+/* --- Header Button Styles (Keep these as they are) --- */
+.header-controls {
+ display: flex;
+ align-items: center;
+ gap: 15px;
+}
+.header-button {
+ padding: 6px 14px;
+ font-size: 0.9rem;
+ border-radius: 5px;
+ cursor: pointer;
+ white-space: nowrap;
+}
+
+/* === THIS IS THE FIX === */
+.button-secondary {
+  /* MODIFIED: Use theme variables to match other theme-aware buttons */
+ background-color: var(--panel-color, #30363d);
+ border: 1px solid var(--border-color, #484f58);
+ color: var(--text-color);
+  font-weight: 500;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+.button-secondary:hover {
+  /* MODIFIED: Use theme variables for hover to match dark mode toggle */
+ background-color: var(--primary-color, #484f58);
+ border-color: var(--accent-color, #586069);
+  /* ADDED: Explicitly set the text color on hover to override global button:hover style */
+  color: var(--text-color); 
+}
+/* === END FIX === */
+
+#userDisplayHeader {
+  gap: 10px;
+ 	color: var(--text-color);
+}
+#userDisplayHeader span {
+  font-weight: 500;
+ 	white-space: nowrap;
+}
+

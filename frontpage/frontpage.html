@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Stock Market Dashboard</title>
+<link rel="stylesheet" href="frontpage.css">
+<link rel="stylesheet" href="widget.css">
+<link rel="stylesheet" href="frontpage_news_section.css">
+<link rel="stylesheet" href="auth.css"> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all..css">
+
+</head>
+<body>
+<div id="splash-screen">
+<header class="dashboard-header splash-header">
+<h1 class="logo">
+<img src="image-removebg-preview.png" alt="Bull Market Logo" width="50px" />
+Financial Market and Analysis Dashboard
+</h1>
+<div class="header-controls">
+<button class="button header-button" id="loginButtonHeader" style="margin-right: 10px;">Sign In</button> <div id="userDisplayHeader" style="display: none; align-items: center; margin-right: 10px;">
+<span style="margin-right: 10px; color: var(--text-color);">Hello, User</span> <button class="button header-button button-secondary" id="logoutButton">Logout</button>
+</div>
+
+<button id="darkModeToggle"><span></span></button>
+</div>
+</header>
+
+<main class="splash-main-layout">
+<div class="intro-section">
+<h1>Advanced NASDAQ Market Analysis</h1>
+<div class="flip-container">
+<div class="flipper">
+<div class="front">
+<p class="intro-text-paragraph" id="intro-paragraph">
+Welcome to a comprehensive financial market and analysis dashboard designed to empower
+your investment journey in the NASDAQ stock market. Our platform provides a seamless,
+real-time experience with advanced analytics and actionable insights to help you make
+informed decisions.
+</p>
+</div>
+<div class="back">
+<ul id="key-features-list">
+<li><strong>Live Market Data:</strong> Real-time tracking of NASDAQ, S&P 500, and Dow Jones.</li>
+<li><strong>Detailed Stock Analysis:</strong> Live prices, interactive charts, and historical data.</li>
+<li><strong>Intuitive UI:</strong> Dynamic dark/light mode, clean layout, and powerful search.</li>
+<li><strong>Sector Performance:</strong> Track how different sectors are performing.</li>
+<li><strong>Seamless Sharing:</strong> Easily share analysis and chart snapshots.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="splash-buttons">
+<button id="keyFeaturesBtn">Key Features</button>
+<a href="../dashboard/dashboard.html" class="button" id="launchDashboardGuestBtn">Login to launch dashboard</a>
+</div>
+</div>
+
+<div id="market-widget-container">
+<div class="market-widget-header">
+<span class="market-widget-title">Market Overview</span>
+<span class="market-widget-live"><span class="market-widget-dot"></span>Live</span>
+</div>
+<div class="market-widget-list">
+<div class="market-widget-card" data-index="NASDAQ">
+<div class="market-info-group">
+<div class="market-widget-label">NASDAQ</div>
+<div class="market-widget-value" id="nasdaq-value">$22,384.697</div>
+</div>
+<div class="market-widget-right">
+<div class="market-widget-change neg" id="nasdaq-change">-113.20 (-0.50%)</div>
+</div>
+</div>
+<div class="market-widget-card" data-index="SP500">
+<div class="market-info-group">
+<div class="market-widget-label">S&P 500</div>
+<div class="market-widget-value" id="sp500-value">$6,604.72</div>
+</div>
+<div class="market-widget-right">
+<div class="market-widget-change neg" id="sp500-change">-33.25 (-0.50%)</div>
+</div>
+</div>
+<div class="market-widget-card" data-index="DOWJONES">
+<div class="market-info-group">
+<div class="market-widget-label">Dow Jones</div>
+<div class="market-widget-value" id="dowjones-value">$45,947.32</div>
+</div>
+<div class="market-widget-right">
+<div class="market-widget-change neg" id="dowjones-change">-173.96 (-0.38%)</div>
+</div>
+</div>
+<div class="market-widget-updated" id="market-widget-updated">Last updated: 02:06:35 AM ET</div>
+</div>
+</div>
+</main>
+<div id="news-section"><div id="news-content"></div></div>
+</div>
+
+<div id="loading-screen" class="hide">
+<div class="loader"></div>
+<p>Loading Dashboard...</p>
+</div>
+
+<div class="auth-modal-overlay" id="loginModalOverlay">
+<div class="auth-modal-content" id="loginModalContent">
+ <button class="auth-modal-close-btn" aria-label="Close Login">&times;</button>
+ <div class="auth-form">
+ <h2>Login</h2>
+ <form id="login-form" novalidate>
+  <div class="form-group">
+      <!-- This is the label for the login field -->
+   <label for="login-identifier">Email / Username</label>
+      <!-- This is the input for the login field -->
+  <input type="text" id="login-identifier" required autocomplete="email username">
+  </div>
+  <div class="form-group">
+  <label for="login-password">Password</label>
+  <input type="password" id="login-password" required autocomplete="current-password">
+  </div>
+  <div class="error-message" id="login-error-message"></div> <button type="submit" class="button">Login</button>
+ </form>
+ <p class="form-text">New user? <a href="#" id="show-signup">Sign up here</a></p>
+ </div>
+</div>
+</div>
+
+<div class="auth-modal-overlay" id="signupModalOverlay">
+<div class="auth-modal-content" id="signupModalContent">
+ <button class="auth-modal-close-btn" aria-label="Close Sign Up">&times;</button>
+ <div class="auth-form">
+ <h2>Sign Up</h2>
+ <form id="signup-form" novalidate>
+  <div class="form-group">
+  <label for="signup-email">Email</label>
+  <input type="email" id="signup-email" required autocomplete="email">
+  </div>
+   
+   <!-- This is your new username field -->
+  <div class="form-group">
+  <label for="signup-username">Username</label>
+  <input type="text" id="signup-username" required autocomplete="username" minlength="3">
+  </div>
+   <!-- End of new field -->
+
+  <div class="form-group">
+  <label for="signup-password">Password</label>
+  <input type="password" id="signup-password" required autocomplete="new-password">
+  <p class="password-hint">Min. 8 characters OR a special character (e.g., !@#$).</p> </div>
+  <div class="error-message" id="signup-error-message"></div> <button type="submit" class="button">Create Account</button>
+
+ </form>
+ <p class="form-text">Already have an account? <a href="#" id="show-login">Login here</a></p>
+ </div>
+</div>
+</div>
+<script type="module" src="frontpage.js"></script>
+<script type="module" src="widget.js"></script>
+<script type="module" src="frontpage_news_section.js"></script>
+
+<script type="module" src="app.js"></script> </body>
+</html>
+

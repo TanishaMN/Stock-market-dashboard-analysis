@@ -1,0 +1,697 @@
+/* ===== CSS RESET & ROOT VARIABLES ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* 🌑 Dark mode (default) */
+  --bg-color: #121212;
+  --panel-color: #1e1e1e;
+  --text-color: #e0e0e0;
+  --primary-color: #2a2a2a;
+  --accent-color: #ff4d4d; /* Assuming this is the desired accent */
+    /* --accent-color: #ff9900; */ /* Use this if you want the orange accent */
+  --green: #2ecc71;
+  --red: #e74c3c;
+  --font-family: 'Inter', sans-serif; /* Changed to Inter */
+  --overlay-bg: rgba(18, 18, 18, 0.95);
+  --border-color: var(--primary-color);
+    --radius-large: 12px;
+    --radius-small: 6px;
+    /* Added for negative color rgba */
+    --negative-color-rgb: 220, 53, 69;
+    /* Added for accent color rgba */
+    --accent-color-rgb: 255, 77, 77; /* Default red accent */
+}
+
+body.light-mode {
+  /* ☀ Light mode */
+  --bg-color: #f0f2f5;
+  --panel-color: #ffffff;
+  --text-color: #24292f;
+  --primary-color: #e4e6eb;
+    --accent-color: #007bff; /* Standard blue for light mode */
+  --overlay-bg: rgba(255, 255, 255, 0.95);
+  --border-color: #ddd;
+    /* Added for negative color rgba */
+    --negative-color-rgb: 220, 53, 69; /* Keep red consistent */
+    /* Added for accent color rgba */
+     --accent-color-rgb: 0, 123, 255; /* Blue accent */
+}
+
+body {
+    /* Updated background */
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  min-height: 100vh;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* === MODIFIED: Header Styling === */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--primary-color); /* Matches front page */
+  padding: 15px 30px; /* Consistent padding */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Consistent shadow */
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Reduced gap slightly */
+}
+
+/* === MODIFIED: Dashboard Title Style === */
+/* Added .logo class to share styles with frontpage */
+.logo {
+  font-weight: 600; /* Matches front page .logo */
+  font-size: 1.5rem; /* Matches front page .logo */
+  color: var(--text-color); /* Ensure visibility */
+  letter-spacing: 0; /* Match frontpage */
+  display: flex; /* Ensure alignment if used elsewhere */
+  align-items: center;
+  gap: 10px;
+}
+.dashboard-title {
+   /* Inherits from .logo now */
+}
+/* === END MODIFIED === */
+
+
+/* ==================================== */
+/* 🔘 UNIFIED BUTTON & INPUT STYLES 🔘 */
+/* ==================================== */
+
+/* General Button Style (Use classes for variations) */
+button,
+.button { /* Added .button class for consistency */
+  background: transparent;
+  border: 1px solid var(--text-color); /* Default border */
+  color: var(--text-color);
+  padding: 10px 18px;
+  border-radius: var(--radius-small, 6px); /* Use variable */
+  font-weight: 600;
+    font-family: var(--font-family);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.72, 0.2, 0.16, 1);
+}
+
+button:hover,
+.button:hover {
+  background-color: var(--accent-color);
+  color: #fff; /* Ensure contrast on accent bg */
+  border-color: var(--accent-color);
+  transform: scale(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.09);
+  filter: none;
+}
+
+/* Specific overrides for header buttons if needed */
+.header-button {
+    padding: 6px 14px; /* Slightly smaller for header */
+    font-size: 0.9rem;
+    border-radius: 5px;
+    border-color: var(--border-color); /* Match theme border */
+    color: var(--text-color);
+    background: var(--panel-color); /* Match theme panel */
+}
+.header-button:hover {
+    background-color: var(--primary-color);
+    border-color: var(--accent-color);
+    color: var(--text-color); /* Keep text color consistent on hover */
+    transform: none; /* Remove scale for header buttons */
+    box-shadow: none;
+}
+
+
+#stockSymbol {
+  flex: 1;
+  padding: 12px;
+  font-size: 1rem; /* Standardized font size */
+  border-radius: var(--radius-small, 6px);
+  border: 1px solid var(--border-color);
+  background: var(--panel-color);
+  color: var(--text-color);
+  outline: none;
+    /* Added padding-right for spinner space */
+    padding-right: 40px;
+  transition: border 0.2s, box-shadow 0.2s, background-color 0.3s, color 0.3s; /* Added transitions */
+}
+
+#stockSymbol:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb, 255, 77, 77), 0.3); /* Use RGB */
+}
+
+#stockSymbol::placeholder {
+  color: var(--text-color);
+  opacity: 0.6;
+}
+
+/* === ADDED/MODIFIED: Search Spinner Styles === */
+.search-box {
+    position: relative; /* Needed for absolute positioning of spinner */
+    display: flex;
+    gap: 12px;
+    align-items: center; /* Vertically align items */
+    margin-bottom: 18px;
+}
+
+/* Base spinner styles (hidden by default via .hidden) */
+.search-spinner {
+    position: absolute;
+    right: 280px; /* Adjust as needed based on button widths */
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex; /* Use flex for dot layout */
+    align-items: center;
+    gap: 4px; /* Space between dots */
+}
+
+.search-spinner div {
+    width: 6px; /* Dot size */
+    height: 6px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out both;
+}
+
+/* Animation delays for the dots */
+.search-spinner .dot1 { animation-delay: -0.32s; }
+.search-spinner .dot2 { animation-delay: -0.16s; }
+.search-spinner .dot3 { animation-delay: 0s; }
+
+/* Bounce animation */
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+  } 40% {
+    transform: scale(1.0);
+  }
+}
+/* === END ADDED/MODIFIED === */
+
+/* ============================ */
+/* 💖 Wishlist & Pop-up Styles 💖 */
+/* ============================ */
+
+.wishlist-heart {
+ background: transparent !important;
+ border: none;
+ cursor: pointer;
+ font-size: 26px;
+ position: absolute;
+ top: 15px;
+ right: 15px;
+ z-index: 5;
+ padding: 6px;
+ transition: transform 0.2s ease;
+}
+
+.wishlist-heart i,
+#wishlistBtn i {
+ color: var(--red, #e74c3c) !important; /* Always use red variable */
+ transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.wishlist-heart:hover {
+ transform: scale(1.15);
+}
+
+.wishlist-heart:hover i,
+#wishlistBtn:hover i {
+ filter: brightness(0.9); /* Slightly darken red on hover */
+}
+
+.wishlist-heart.added i {
+ color: var(--red, #e74c3c) !important;
+}
+
+.wishlist-heart.added:hover i {
+ filter: brightness(0.9);
+}
+
+.wishlist-btn-loading {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.btn-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+button[disabled], .wishlist-btn-loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+  filter: grayscale(0.05);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#wishlistTable td.price-unknown {
+    /* Use text color with lower opacity */
+  color: var(--text-color);
+    opacity: 0.6;
+  font-style: italic;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0; /* Replaces top/left/width/height */
+  background-color: var(--overlay-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+    opacity: 0; /* Start hidden */
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s 0.3s linear;
+}
+
+.overlay:not(.hidden) { /* Show when .hidden is removed */
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease;
+}
+
+.popup-content {
+  background: var(--panel-color);
+  padding: 25px 30px; /* Adjusted padding */
+  border-radius: var(--radius-large, 12px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  color: var(--text-color);
+    /* Added animation */
+    transform: scale(0.95) translateY(-10px);
+    transition: transform 0.3s ease, background-color 0.3s, color 0.3s; /* Added transitions */
+}
+
+.overlay:not(.hidden) .popup-content {
+    transform: scale(1) translateY(0);
+}
+
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+    padding-bottom: 10px; /* Add padding below header */
+    border-bottom: 1px solid var(--border-color); /* Add separator */
+}
+
+.popup-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.close-btn {
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--text-color);
+  background: none;
+  border: none;
+  cursor: pointer;
+    opacity: 0.7; /* Make it slightly less prominent */
+  transition: color 0.2s, opacity 0.2s;
+}
+
+.close-btn:hover {
+  color: var(--accent-color);
+    opacity: 1;
+}
+
+#wishlistTableWrapper {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+#wishlistTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#wishlistTable th,
+#wishlistTable td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s, border-color 0.3s; /* Add transition */
+}
+
+#wishlistTable th { /* Header specific style */
+    font-weight: 600;
+    background-color: var(--primary-color);
+}
+
+#wishlistTable tr:hover {
+  background-color: var(--primary-color);
+}
+
+#wishlistTable .remove-btn {
+  background: var(--red);
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: var(--radius-small, 6px);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#wishlistTable .remove-btn:hover {
+  filter: brightness(0.9);
+}
+
+#wishlistTable a.wishlist-link { /* Style links in table */
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+#wishlistTable a.wishlist-link:hover {
+    text-decoration: underline;
+}
+
+
+/* ============================= */
+/* PANELS, FORMS, TABLES (Keep) */
+/* ============================= */
+.container {
+    /* Main dashboard container */
+  max-width: 1200px; /* Wider for dashboard */
+  margin: 24px auto;
+  background: transparent; /* Use body background */
+  border-radius: 0; /* No radius */
+  padding: 0 20px; /* Side padding only */
+  box-shadow: none; /* No shadow */
+  color: var(--text-color);
+}
+
+/* Style main content area */
+.dashboard-main-content {
+    background-color: var(--panel-color);
+    padding: 25px;
+    border-radius: var(--radius-large, 12px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    margin-top: 20px; /* Space below header */
+    transition: background-color 0.3s; /* Add transition */
+}
+
+h1 { /* This seems unused, remove if not needed */
+  margin: 6px 0 16px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--text-color);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+    /* Use panel color, no extra background */
+  border-radius: var(--radius-small, 6px);
+  overflow: hidden;
+  color: var(--text-color);
+}
+
+.data-table th,
+.data-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--border-color);
+  text-align: left;
+  font-size: 1rem; /* Standardized */
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s; /* Add transition */
+}
+
+.data-table th {
+  background-color: var(--primary-color);
+  font-weight: 600;
+}
+
+.data-table tbody tr:hover {
+  background-color: var(--primary-color);
+}
+
+.company-info {
+  padding: 15px; /* Add padding */
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-small, 6px);
+    margin-bottom: 20px; /* Space below */
+  position: relative;
+    transition: border-color 0.3s; /* Add transition */
+}
+
+.company-head {
+  display: flex;
+  gap: 15px; /* Increased gap */
+  align-items: flex-start; /* Align items top */
+}
+
+#companyLogo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border-radius: var(--radius-small, 6px);
+    background: var(--bg-color); /* Background for contrast */
+  padding: 6px;
+    /* === MODIFIED: REMOVED filter transition === */
+  /* transition: filter 0.3s ease; */
+    border: 1px solid var(--border-color);
+    transition: background-color 0.3s, border-color 0.3s; /* Add transitions */
+}
+
+/* === MODIFIED: Remove logo inversion rule === */
+/* This rule was causing the color change issue */
+/* body:not(.light-mode) .company-logo {
+  filter: invert(1);
+} */
+/* === END MODIFIED === */
+
+body.light-mode .company-logo {
+  filter: none;
+    background: #fff; /* White background in light mode */
+}
+
+
+.company-text {
+  display: flex;
+  flex-direction: column;
+    flex-grow: 1; /* Allow text to take remaining space */
+}
+
+.company-name {
+  font-size: 1.5rem; /* Slightly larger */
+  margin: 0 0 5px 0; /* Adjusted margin */
+  font-weight: 600; /* Bolder */
+  color: var(--text-color);
+}
+
+.company-description {
+    font-size: 0.95rem; /* Standard size */
+  color: var(--text-color); /* Use standard text color */
+    opacity: 0.8; /* Slightly muted */
+  margin-bottom: 8px;
+}
+
+.meta {
+  display: flex;
+  gap: 20px; /* Increased gap */
+  flex-wrap: wrap;
+  color: var(--text-color); /* Standard text color */
+    opacity: 0.8;
+  font-size: 0.9rem; /* Slightly smaller */
+  margin-top: 15px; /* Space above */
+    padding-top: 10px; /* Space from top content */
+    border-top: 1px solid var(--border-color); /* Separator */
+    transition: border-color 0.3s, color 0.3s; /* Add transitions */
+}
+.meta span b { /* Style bold tags */
+    font-weight: 600;
+    opacity: 1;
+}
+
+
+#darkModeToggle { /* This ID might conflict, consider renaming if issue */
+  padding: 8px 16px;
+  background: var(--panel-color); /* Match theme */
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: var(--radius-small, 6px);
+}
+
+#darkModeToggle:hover {
+  background-color: var(--primary-color);
+  border-color: var(--accent-color);
+}
+
+.header-controls { /* Controls container in header */
+  display: flex;
+  gap: 12px;
+  align-items: center; /* Vertically align buttons */
+  position: relative;
+}
+
+.share-container {
+  position: relative;
+}
+
+/* Styles for share dropdown - REMOVED as dropdown is not used now */
+
+
+#suggestions {
+  position: absolute;
+  top: calc(100% + 4px); /* Position below input */
+  left: 0;
+    /* Adjust width based on buttons - might need tweaking */
+    width: calc(100% - 280px); /* Approx width minus buttons */
+  background: var(--panel-color);
+  color: var(--text-color);
+  border-radius: var(--radius-small, 6px);
+  border: 1px solid var(--border-color);
+  max-height: 240px;
+  overflow-y: auto;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); /* Softer shadow */
+  display: none; /* Controlled by JS */
+  opacity: 0;
+  transform: translateY(-10px);
+  z-index: 1000;
+  transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+#suggestions.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.suggestion-item {
+  padding: 10px 15px; /* Adjusted padding */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+  color: var(--text-color);
+    border-bottom: 1px solid var(--border-color); /* Separator */
+}
+.suggestion-item:last-child {
+    border-bottom: none; /* No border on last item */
+}
+
+
+.suggestion-item:hover,
+.suggestion-item.active {
+  background-color: var(--primary-color); /* Use primary for hover */
+  color: var(--text-color); /* Keep text color */
+}
+
+.suggestion-item.active {
+    background-color: var(--accent-color); /* Accent for active selection */
+  color: #fff; /* White text on accent */
+}
+
+.suggestion-item span:first-child { /* Style description */
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.suggestion-item span:last-child { /* Style symbol */
+    opacity: 0.7;
+    font-size: 0.9em;
+}
+
+
+/* Chart Specific Styles */
+.stock-info {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-small, 6px);
+    padding: 15px;
+    margin-top: 20px; /* Space from company info */
+    transition: border-color 0.3s; /* Add transition */
+}
+
+.market-panel {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.data-table-wrapper {
+    flex: 1; /* Allow table to grow */
+    min-width: 250px; /* Minimum width */
+}
+
+.chart-wrapper {
+    flex: 2; /* Chart takes more space */
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.chart-controls label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+.chart-controls select {
+    padding: 6px 10px;
+    border-radius: var(--radius-small, 4px);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    font-family: var(--font-family);
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Add transition */
+}
+.chart-controls select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+#priceChart {
+    max-width: 100%; /* Ensure chart is responsive */
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* Add styles for positive/negative change colors */
+.pos {
+    color: var(--green);
+}
+.neg {
+    color: var(--red);
+}
+

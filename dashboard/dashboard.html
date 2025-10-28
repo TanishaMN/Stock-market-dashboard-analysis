@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Stock Market Dashboard</title>
+
+<link rel="stylesheet" href="dashboard.css" />
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+ xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+ crossorigin="anonymous"
+ referrerpolicy="no-referrer" />
+
+<!-- Link auth.css for header button styles -->
+<link rel="stylesheet" href="../frontpage/auth.css"> <!-- Adjust path if needed -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+<body>
+<div class="container" id="dashboard-page">
+
+<header class="dashboard-header">
+    <div class="header-left logo"> <!-- Added logo class -->
+    <img src="image-removebg-preview.png" alt="Bull Market Logo" width="40px" /> <!-- No style needed -->
+    <span class="dashboard-title">Stock Market Dashboard</span>
+  </div>
+  <div class="header-controls">
+    <!-- User Display (Populated by JS) -->
+    <div id="userDisplayHeader" style="display: none; align-items: center; gap: 10px;">
+      <span style="color: var(--text-color);">Hello, User</span>
+      <button class="button header-button button-secondary" id="logoutButton">Logout</button>
+    </div>
+    <!-- Wishlist Button -->
+    <button id="wishlistBtn" class="header-button"><i class="fa-solid fa-heart" style="margin-right: 5px;"></i>My Wishlist</button>
+    <!-- Dark Mode Toggle -->
+    <button id="darkModeToggle" class="header-button"><span></span></button> <!-- Text set by JS -->
+    <!-- Share Button -->
+    <button id="shareButton" class="header-button"><i class="fa-solid fa-share-nodes" style="margin-right: 5px;"></i>Share</button>
+  </div>
+</header>
+
+
+<main class="dashboard-main-content" id="dashboard-main-content">
+  <form id="searchForm" class="search-box" autocomplete="off" novalidate>
+   <input id="stockSymbol" type="text" placeholder="Type company name or ticker (e.g., Apple or AAPL)"
+      aria-controls="suggestions" aria-autocomplete="list" />
+      <div id="searchSpinner" class="search-spinner hidden" role="status" aria-label="Loading suggestions">
+          <div class="dot1"></div>
+          <div class="dot2"></div>
+          <div class="dot3"></div>
+      </div>
+   <div id="suggestions" class="suggestions" role="listbox" aria-hidden="true"></div>
+   <button id="searchBtn" type="submit" class="button">Get Stock Data</button>
+   <button id="refreshPageBtn" type="button" class="button">Refresh Page</button>
+  </form>
+
+    <!-- === ADDED: Message Area === -->
+    <div id="dataDisplayMessage" class="data-message" aria-live="polite"></div>
+    <!-- === END ADDED === -->
+
+  <div id="shareSection"> <!-- This div wraps company and stock info -->
+   <div class="company-info hidden" id="companyPanel" aria-live="polite">
+    <div class="company-head">
+     <img id="companyLogo" class="company-logo hidden" alt="Company logo" />
+     <div class="company-text">
+      <p class="company-name" id="CompanyName">-</p>
+      <p class="company-description" id="companyDescription">-</p>
+     </div>
+     <button class="wishlist-heart hidden" id="wishlistHeartBtn" aria-label="Add to wishlist">
+      <i class="fa-regular fa-heart"></i>
+     </button>
+    </div>
+
+    <div class="meta">
+     <span><b>Sector:</b> <span id="sector">-</span></span>
+     <span><b>Exchange:</b> <span id="exchange">-</span></span>
+     <span><b>Market Cap:</b> <span id="marketCap">-</span></span>
+    </div>
+   </div>
+
+   <div class="stock-info hidden" id="stockPanel">
+    <div class="market-panel">
+     <div class="data-table-wrapper">
+      <table class="data-table">
+       <tbody>
+        <tr><th>Price</th><td id="stockPrice">-</td></tr>
+        <tr><th>Change</th><td id="stockChange">-</td></tr>
+        <tr><th>Previous Close</th><td id="previousClose">-</td></tr>
+        <tr><th>Open</th><td id="stockOpen">-</td></tr>
+        <tr><th>High</th><td id="stockHigh">-</td></tr>
+        <tr><th>Low</th><td id="stockLow">-</td></tr>
+       </tbody>
+      </table>
+     </div>
+
+     <div class="chart-wrapper" aria-label="Price chart">
+      <div class="chart-controls">
+       <label for="chart-type-select">Chart Type:</label>
+       <select id="chart-type-select">
+        <option value="line">Line Graph</option>
+        <option value="area">Area Graph</option>
+        <option value="bar">Bar Graph</option>
+       </select>
+
+       <label for="timeline-select">Timeline:</label>
+       <select id="timeline-select">
+        <option value="week">Weeks</option>
+        <option value="month">Months</option>
+       </select>
+      </div>
+      <canvas id="priceChart" width="600" height="300" role="img" aria-label="Stock price chart"></canvas>
+     </div>
+    </div>
+   </div>
+  </div> <!-- End of shareSection -->
+</main> <!-- End of dashboard-main-content -->
+
+<!-- Overlays outside main content -->
+<div id="loadingOverlay" class="overlay hidden" aria-hidden="true">
+ <div class="spinner" role="status" aria-label="Loading"></div>
+</div>
+
+<div id="errorPopup" class="overlay hidden" aria-hidden="true">
+ <div class="popup-content" role="alertdialog" aria-modal="true">
+  <button class="close-btn" aria-label="Close popup">&times;</button>
+  <p id="popupMessage"></p>
+ </div>
+</div>
+
+<!-- Wishlist Modal -->
+<div id="wishlistModal" class="overlay hidden" aria-hidden="true" role="dialog" aria-labelledby="wishlistModalTitle">
+  <div class="popup-content" id="wishlistModalContent">
+   <div class="popup-header">
+    <h3 id="wishlistModalTitle">My Wishlist</h3>
+    <button class="close-btn" aria-label="Close Wishlist">&times;</button>
+   </div>
+   <div id="wishlistTableWrapper">
+    <table class="data-table" id="wishlistTable">
+     <thead>
+      <tr>
+       <th>Company</th>
+       <th>Sector</th>
+       <th>Price</th>
+       <th>Action</th>
+      </tr>
+     </thead>
+     <tbody>
+       <!-- JS will populate this -->
+     </tbody>
+    </table>
+   </div>
+  </div>
+</div> <!-- End Wishlist Modal -->
+
+</div> <!-- End container -->
+
+<!-- Scripts at the end -->
+<script type="module" src="../frontpage/app.js"></script>
+<script type="module" src="chart.js"></script>
+<script type="module" src="dashboard.js"></script>
+
+</body>
+</html>
+
